@@ -1,0 +1,4 @@
+interface:
+  display_name: "TranscribeX"
+  short_description: "Transcribe meeting audio through TranscribeX"
+  default_prompt: "Use $transcribex-transcribe to transcribe a meeting audio file."

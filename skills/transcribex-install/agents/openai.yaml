@@ -1,0 +1,4 @@
+interface:
+  display_name: "TranscribeX Install"
+  short_description: "Install TranscribeX with model guidance"
+  default_prompt: "Use $transcribex-install to install TranscribeX and choose the right ASR model."

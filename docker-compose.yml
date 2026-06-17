@@ -1,0 +1,20 @@
+services:
+  transcribex:
+    build:
+      context: .
+      args:
+        PYTORCH_INDEX_URL: ${PYTORCH_INDEX_URL:-https://download.pytorch.org/whl/cpu}
+    image: transcribex:latest
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "${TRANSCRIBEX_PORT:-8000}:8000"
+    volumes:
+      - transcribex-models:/models
+      - transcribex-work:/tmp/transcribex
+    restart: unless-stopped
+
+volumes:
+  transcribex-models:
+  transcribex-work:
