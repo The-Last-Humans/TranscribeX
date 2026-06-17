@@ -44,6 +44,35 @@ If `TRANSCRIBEX_API_KEY` is set, include:
 -H "Authorization: Bearer $TRANSCRIBEX_API_KEY"
 ```
 
+## Agent Install Prompt
+
+Copy this prompt into Codex or another local coding agent to clone TranscribeX from GitHub and install it on the current machine:
+
+```text
+Install TranscribeX from GitHub and verify it is ready for local meeting transcription.
+
+Repository: https://github.com/The-Last-Humans/TranscribeX
+
+Steps:
+1. Clone the repository if it is not already present:
+   git clone https://github.com/The-Last-Humans/TranscribeX.git
+2. Enter the project directory and inspect README.md plus skills/transcribex-install/SKILL.md.
+3. Run:
+   python3 skills/transcribex-install/scripts/detect_environment.py --pretty
+4. Choose the best supported profile for this machine. Prefer cpu-balanced unless an NVIDIA GPU is available; use cpu-multilingual when Chinese/English/Cantonese mixed meetings are important.
+5. Write .env with the selected profile:
+   python3 skills/transcribex-install/scripts/configure_env.py --profile <profile>
+6. Build and start the Docker service:
+   docker compose up --build -d
+7. Verify:
+   curl -fsS http://127.0.0.1:8000/health
+8. Install the bundled skills by copying or symlinking skills/transcribex-install and skills/transcribex-transcribe into ${CODEX_HOME:-$HOME/.codex}/skills if the user wants Codex to invoke them automatically.
+9. Show the user how to transcribe an audio file:
+   python3 skills/transcribex-transcribe/scripts/transcribe_audio.py /path/to/meeting.wav --format markdown
+
+Do not install Docker automatically unless the user explicitly asks. If Docker is missing or not running, explain the prerequisite and stop.
+```
+
 ## API
 
 ### `GET /health`
