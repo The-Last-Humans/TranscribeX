@@ -12,9 +12,11 @@ services:
       - "${TRANSCRIBEX_PORT:-8000}:8000"
     volumes:
       - transcribex-models:/models
+      - transcribex-config:/config
       - transcribex-work:/tmp/transcribex
     restart: unless-stopped
 
 volumes:
   transcribex-models:
+  transcribex-config:
   transcribex-work:

@@ -1,0 +1,308 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f4f6f8;
+  color: #18212f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px clamp(18px, 4vw, 48px);
+  color: #f8fafc;
+  background: #172033;
+  border-bottom: 4px solid #2f9e8f;
+}
+
+.topbar h1,
+.topbar p,
+.band h2,
+.band p {
+  margin: 0;
+}
+
+.topbar h1 {
+  font-size: 24px;
+  font-weight: 720;
+}
+
+.topbar p {
+  margin-top: 4px;
+  color: #c7d0dc;
+  font-size: 14px;
+}
+
+.health {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #9aa6b2;
+}
+
+.dot.ok {
+  background: #2f9e8f;
+}
+
+.dot.warn {
+  background: #d69e2e;
+}
+
+.dot.bad {
+  background: #d94f4f;
+}
+
+.layout {
+  width: min(1180px, calc(100vw - 32px));
+  margin: 28px auto 48px;
+  display: grid;
+  gap: 18px;
+}
+
+.band {
+  padding: 22px;
+  background: #ffffff;
+  border: 1px solid #d8dee8;
+  border-radius: 8px;
+}
+
+.notice {
+  border-color: #d69e2e;
+  background: #fff8ea;
+}
+
+.hidden {
+  display: none;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.sectionHeader h2,
+.notice h2 {
+  font-size: 18px;
+  font-weight: 680;
+}
+
+.sectionHeader p,
+.notice p {
+  margin-top: 5px;
+  color: #5d6b7c;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.facts div {
+  min-height: 72px;
+  padding: 12px;
+  background: #f7f9fb;
+  border: 1px solid #e2e7ef;
+  border-radius: 8px;
+}
+
+.facts dt {
+  color: #697789;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.facts dd {
+  margin: 0;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.profileGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.profile {
+  display: grid;
+  align-content: space-between;
+  min-height: 212px;
+  padding: 16px;
+  border: 1px solid #d8dee8;
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.profile.selected {
+  border-color: #2f9e8f;
+  box-shadow: inset 0 0 0 1px #2f9e8f;
+}
+
+.profile h3 {
+  margin: 0;
+  font-size: 15px;
+}
+
+.profile .meta {
+  display: grid;
+  gap: 3px;
+  margin: 10px 0;
+  color: #425166;
+  font-size: 13px;
+}
+
+.profile p {
+  color: #5d6b7c;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.profile .caution {
+  color: #8a5f08;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+label {
+  display: grid;
+  gap: 7px;
+  color: #37465a;
+  font-size: 13px;
+  font-weight: 620;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  color: #18212f;
+  background: #ffffff;
+  border: 1px solid #c9d2df;
+  border-radius: 6px;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid rgba(47, 158, 143, 0.28);
+  border-color: #2f9e8f;
+}
+
+.check {
+  grid-template-columns: 18px 1fr;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+}
+
+.check input {
+  width: 18px;
+  min-height: 18px;
+  height: 18px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+button {
+  min-height: 36px;
+  padding: 8px 13px;
+  border: 1px solid #23324a;
+  border-radius: 6px;
+  background: #23324a;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: #ffffff;
+  color: #23324a;
+}
+
+button:hover {
+  filter: brightness(1.04);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+#saveStatus {
+  color: #425166;
+  font-size: 14px;
+}
+
+.jsonBlock {
+  min-height: 160px;
+  max-height: 380px;
+  overflow: auto;
+  margin: 0;
+  padding: 14px;
+  color: #e7edf6;
+  background: #111827;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .topbar,
+  .sectionHeader,
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .facts,
+  .profileGrid,
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .health {
+    width: fit-content;
+  }
+}

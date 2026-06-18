@@ -7,7 +7,45 @@ description: Install and configure the TranscribeX Docker transcription service.
 
 Guide the user from environment detection to a working TranscribeX Docker service.
 
+Prefer the v2 setup API when a TranscribeX service is already running from a packaged Docker image. Use local `.env` generation only when the user is building from source with Docker Compose.
+
 ## Workflow
+
+### Packaged Docker image workflow
+
+1. Start the published or locally built image if it is not already running:
+
+```bash
+docker run -d --name transcribex \
+  -p 8000:8000 \
+  -v transcribex-models:/models \
+  -v transcribex-config:/config \
+  ghcr.io/the-last-humans/transcribex:latest
+```
+
+2. Inspect setup status:
+
+```bash
+python3 skills/transcribex-install/scripts/setup_service.py --show
+```
+
+3. Apply the server-recommended setup automatically, unless the user requested a specific profile:
+
+```bash
+python3 skills/transcribex-install/scripts/setup_service.py --auto
+```
+
+Use `--profile <profile>` to force a profile, or `--set-api-key <token>` to persist API auth.
+
+4. Verify health:
+
+```bash
+curl -fsS http://127.0.0.1:8000/health
+```
+
+5. Tell the user how to invoke `$transcribex-transcribe` for actual transcription.
+
+### Source checkout workflow
 
 1. Run the environment detector from the TranscribeX project root:
 
@@ -34,7 +72,13 @@ docker compose up --build -d
 curl -fsS http://127.0.0.1:8000/health
 ```
 
-6. Tell the user how to invoke `$transcribex-transcribe` for actual transcription.
+6. Open the management UI at `http://127.0.0.1:8000/admin`, or complete setup through the API:
+
+```bash
+python3 skills/transcribex-install/scripts/setup_service.py --auto
+```
+
+7. Tell the user how to invoke `$transcribex-transcribe` for actual transcription.
 
 ## Profiles
 
@@ -71,6 +115,21 @@ python3 skills/transcribex-install/scripts/configure_env.py --asr-model iic/Sens
 ```
 
 The script preserves unknown existing `.env` keys and updates TranscribeX keys.
+
+## Setup API Script
+
+`scripts/setup_service.py` configures a running v2 service through `/v1/setup/status` and `/v1/setup/apply`.
+
+Examples:
+
+```bash
+python3 skills/transcribex-install/scripts/setup_service.py --show
+python3 skills/transcribex-install/scripts/setup_service.py --auto
+python3 skills/transcribex-install/scripts/setup_service.py --profile cpu-multilingual
+python3 skills/transcribex-install/scripts/setup_service.py --profile gpu-balanced --set-api-key "$TRANSCRIBEX_API_KEY"
+```
+
+If a service already has an API key, pass it with `--api-key` or `TRANSCRIBEX_API_KEY`.
 
 ## Safety
 

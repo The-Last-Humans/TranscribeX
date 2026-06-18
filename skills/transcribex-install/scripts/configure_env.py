@@ -24,6 +24,9 @@ DEFAULTS = {
     "TRANSCRIBEX_KEEP_UPLOADS": "false",
     "TRANSCRIBEX_WORK_DIR": "/tmp/transcribex",
     "TRANSCRIBEX_MODEL_CACHE_DIR": "/models",
+    "TRANSCRIBEX_CONFIG_PATH": "/config/config.json",
+    "TRANSCRIBEX_REQUIRE_SETUP": "true",
+    "TRANSCRIBEX_ADMIN_ENABLED": "true",
 }
 
 

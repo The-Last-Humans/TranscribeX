@@ -6,7 +6,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Any
 
-from transcribex.config import Settings
+from transcribex.runtime_config import RuntimeConfig
 
 logger = logging.getLogger(__name__)
 
@@ -19,12 +19,12 @@ class ModelSpec:
     spk_model: str | None
     device: str
     hub: str | None
+    batch_size_s: int
 
 
 class FunASREngine:
-    def __init__(self, spec: ModelSpec, batch_size_s: int) -> None:
+    def __init__(self, spec: ModelSpec) -> None:
         self.spec = spec
-        self.batch_size_s = batch_size_s
         self._model: Any | None = None
         self._load_lock = Lock()
         self._infer_lock = Lock()
@@ -73,7 +73,7 @@ class FunASREngine:
         self.load()
         generate_kwargs: dict[str, Any] = {
             "input": str(audio_path),
-            "batch_size_s": self.batch_size_s,
+            "batch_size_s": self.spec.batch_size_s,
         }
         if language:
             generate_kwargs["language"] = language
@@ -86,32 +86,32 @@ class FunASREngine:
 
 
 class EngineManager:
-    def __init__(self, settings: Settings) -> None:
-        self.settings = settings
+    def __init__(self) -> None:
         self._engines: dict[ModelSpec, FunASREngine] = {}
         self._lock = Lock()
 
-    def default_spec(self, *, model: str | None = None, diarize: bool = True) -> ModelSpec:
+    def default_spec(self, config: RuntimeConfig, *, model: str | None = None, diarize: bool = True) -> ModelSpec:
         return ModelSpec(
-            asr_model=model or self.settings.asr_model,
-            vad_model=self.settings.vad_model,
-            punc_model=self.settings.punc_model,
-            spk_model=self.settings.spk_model if diarize else None,
-            device=self.settings.device,
-            hub=self.settings.hub,
+            asr_model=model or config.asr_model,
+            vad_model=config.vad_model,
+            punc_model=config.punc_model,
+            spk_model=config.spk_model if diarize else None,
+            device=config.device,
+            hub=config.hub,
+            batch_size_s=config.batch_size_s,
         )
 
     def get_engine(self, spec: ModelSpec) -> FunASREngine:
         with self._lock:
             engine = self._engines.get(spec)
             if engine is None:
-                engine = FunASREngine(spec, batch_size_s=self.settings.batch_size_s)
+                engine = FunASREngine(spec)
                 self._engines[spec] = engine
             return engine
 
-    def preload_default(self) -> None:
-        self.get_engine(self.default_spec()).load()
+    def preload_default(self, config: RuntimeConfig) -> None:
+        self.get_engine(self.default_spec(config)).load()
 
-    def is_default_loaded(self) -> bool:
-        engine = self._engines.get(self.default_spec())
+    def is_default_loaded(self, config: RuntimeConfig) -> bool:
+        engine = self._engines.get(self.default_spec(config))
         return bool(engine and engine.loaded)

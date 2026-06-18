@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TranscribeX Admin</title>
+    <link rel="stylesheet" href="/assets/admin.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>TranscribeX</h1>
+        <p id="subtitle">Local transcription service setup and model management</p>
+      </div>
+      <div class="health">
+        <span id="healthDot" class="dot"></span>
+        <span id="healthText">Loading</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section id="setupBanner" class="band notice hidden">
+        <div>
+          <h2>Setup required</h2>
+          <p>Select a recommended profile for this machine, review the model stack, then save the runtime configuration.</p>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="sectionHeader">
+          <div>
+            <h2>Device</h2>
+            <p>Recommendations are based on local CPU, memory, and NVIDIA GPU detection inside the container.</p>
+          </div>
+          <button id="refreshButton" type="button">Refresh</button>
+        </div>
+        <dl id="facts" class="facts"></dl>
+      </section>
+
+      <section class="band">
+        <div class="sectionHeader">
+          <div>
+            <h2>Recommended Profiles</h2>
+            <p>Use a profile as the starting point, then adjust fields before saving.</p>
+          </div>
+        </div>
+        <div id="profiles" class="profileGrid"></div>
+      </section>
+
+      <section class="band">
+        <div class="sectionHeader">
+          <div>
+            <h2>Runtime Configuration</h2>
+            <p>This is persisted in the configured TranscribeX config path and used by API transcription requests.</p>
+          </div>
+        </div>
+
+        <form id="setupForm" class="formGrid">
+          <label>
+            ASR model
+            <input id="asrModel" name="asr_model" autocomplete="off" />
+          </label>
+          <label>
+            Device
+            <select id="device" name="device">
+              <option value="cpu">cpu</option>
+              <option value="cuda">cuda</option>
+            </select>
+          </label>
+          <label>
+            VAD model
+            <input id="vadModel" name="vad_model" autocomplete="off" />
+          </label>
+          <label>
+            Punctuation model
+            <input id="puncModel" name="punc_model" autocomplete="off" />
+          </label>
+          <label>
+            Speaker model
+            <input id="spkModel" name="spk_model" autocomplete="off" />
+          </label>
+          <label>
+            Batch seconds
+            <input id="batchSize" name="batch_size_s" type="number" min="1" step="1" />
+          </label>
+          <label>
+            Optional hub
+            <input id="hub" name="hub" autocomplete="off" placeholder="modelscope, huggingface, or blank" />
+          </label>
+          <label>
+            Max upload MB
+            <input id="maxUpload" name="max_upload_mb" type="number" min="1" step="1" />
+          </label>
+          <label>
+            New API key
+            <input id="apiKey" name="api_key" type="password" autocomplete="new-password" placeholder="leave blank to keep unchanged" />
+          </label>
+          <label>
+            Admin/API key for saving
+            <input id="adminKey" type="password" autocomplete="current-password" placeholder="only needed after an API key is set" />
+          </label>
+          <label class="check">
+            <input id="preloadModel" name="preload_model" type="checkbox" />
+            Preload model on service startup
+          </label>
+          <label class="check">
+            <input id="keepUploads" name="keep_uploads" type="checkbox" />
+            Keep uploads for debugging
+          </label>
+        </form>
+
+        <div class="actions">
+          <button id="saveButton" type="button">Save Setup</button>
+          <span id="saveStatus" role="status"></span>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="sectionHeader">
+          <div>
+            <h2>Current State</h2>
+            <p>Useful for agents and operators before submitting long audio files.</p>
+          </div>
+        </div>
+        <pre id="currentState" class="jsonBlock">{}</pre>
+      </section>
+    </main>
+
+    <script src="/assets/admin.js" defer></script>
+  </body>
+</html>

@@ -25,10 +25,13 @@ class Settings(BaseSettings):
     keep_uploads: bool = False
     work_dir: Path = Path("/tmp/transcribex")
     model_cache_dir: Path | None = Path("/models")
+    config_path: Path | None = Path(".transcribex/config.json")
+    require_setup: bool = True
+    admin_enabled: bool = True
     allowed_origins: list[str] = Field(default_factory=list)
     batch_size_s: int = 300
 
-    @field_validator("vad_model", "punc_model", "spk_model", "hub", "api_key", mode="before")
+    @field_validator("vad_model", "punc_model", "spk_model", "hub", "api_key", "config_path", mode="before")
     @classmethod
     def empty_string_to_none(cls, value: object) -> object:
         if isinstance(value, str) and value.strip() == "":
